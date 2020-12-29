@@ -1,6 +1,9 @@
 # Code in this file is copied and adapted from
 # https://github.com/ray-project/ray/blob/master/python/ray/rllib/utils/filter.py
 
+# This code has been modified by Nate Cibik in order to accept previous distribution
+# information to use in the event of resuming paused/recovered training session.
+
 
 from __future__ import absolute_import
 from __future__ import division

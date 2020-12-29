@@ -1,6 +1,9 @@
 # Code in this file is copied and adapted from
 # https://github.com/openai/evolution-strategies-starter.
 
+# This code has been modified by Nate Cibik to include functionality for
+# learning rate decay parameter
+
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function

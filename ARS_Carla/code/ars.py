@@ -5,8 +5,17 @@ Aurelia Guy
 Benjamin Recht 
 
 !!!This code has been modified by Nate Cibik in order to work with a Carla
-Client Environment. The CarEnv() Class used is highly based off of that made
+Client Environment. 
+
+The CarEnv() Class used is highly based off of that made
 by Sentdex in his Deep Q Learning tutorial series using Carla.
+
+Multiple arguments have been added to the argparser at the bottom of this
+code to increase the functionality with Carla, as well as to add the ability
+to resume training from a pre-existing policy.
+
+Optional Learning rate and Delta Standard Deviation Decay functionality have 
+been added.
 
 '''
 import os
