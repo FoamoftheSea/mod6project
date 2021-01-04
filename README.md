@@ -1,4 +1,9 @@
+Project Links:
+[Blog Post](https://natecibik.medium.com/training-autonomous-vehicles-using-augmented-random-search-in-carla-19fcbe62b697) - Summarizes the research, methodology, and conclusions of this study.
+[Non-technical Presentation](https://youtu.be/ILbmBa5MAtI) - Presents the business insights gained from this study for a non-technical audience.
+
 # Training Autonomous Vehicles using ARS in Carla
+
 This repository offers a learning framework for training self-driving cars in the [Carla simulator](https://carla.org/) using [Augmented Random Search (ARS)](https://arxiv.org/pdf/1803.07055.pdf), as well as a study of the first implementation of this learning framework. ARS is an exciting new algorithm in the field of Reinforcement Learning (RL) which has been shown to produce competitive to superior results on benchmark MuJoCo tasks, while offering at least 15x computational efficiency in comparison to other model-free learning methods. This study sought to investigate the application of this algorithm in the context of autonomous vehicles using Carla as a training environment. Below, we can see the math behind the ARS algorithm.
 
 ![The math behind ARS](images/ars_formula_explained.png)
