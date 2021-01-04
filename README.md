@@ -1,8 +1,6 @@
-##### Project Links:
-
-[Blog Post](https://natecibik.medium.com/training-autonomous-vehicles-using-augmented-random-search-in-carla-19fcbe62b697) - Summarizes the research, methodology, and conclusions of this study.
-
-[Non-technical Presentation](https://youtu.be/ILbmBa5MAtI) - Presents the business insights gained from this study for a non-technical audience.
+#### Project Links:
+- [Blog Post](https://natecibik.medium.com/training-autonomous-vehicles-using-augmented-random-search-in-carla-19fcbe62b697) - Summarizes the research, methodology, and conclusions of this study.
+- [Non-technical Presentation](https://youtu.be/ILbmBa5MAtI) - Presents the business insights gained from this study for a non-technical audience.
 
 # Training Autonomous Vehicles using ARS in Carla
 
