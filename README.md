@@ -26,15 +26,15 @@ The safety and scalability of learning in a simulated environment such as Carla 
 
 
 ## Contents
-The '[notebook1_research](notebook1_research.ipynb)' notebook contains the abstract for this study, and presents a concise review of the research which made it possible. The notebook offers an intuitive explanation of the math behind the learning algorithm, and provides a basic coding framework of the process which makes it easy to understand the mechanics involved in training the agent, built off of the [ARS framework provided by Colin Skow](https://github.com/colinskow/move37/tree/master/ars). 
+- [notebook1_research](./notebook1_research.ipynb) - contains the abstract for this study, and presents a concise review of the research which made it possible. The notebook offers an intuitive explanation of the math behind the learning algorithm, and provides a basic coding framework of the process which makes it easy to understand the mechanics involved in training the agent, built off of the [ARS framework provided by Colin Skow](https://github.com/colinskow/move37/tree/master/ars). 
 
-The '[notebook2_train_agent](notebook2_train_agent.ipynb)' notebook offers guidance on how to get a parallelized training session started using the code in the '[ARS_Carla/](ARS_Carla/)' folder.
+- [notebook2_train_agent](./notebook2_train_agent.ipynb) - offers guidance on how to get a parallelized training session started using the code in the '[ARS_Carla/](ARS_Carla/)' folder.
 
-The '[notebook3_results_analysis](notebook3_results_analysis.ipynb)' notebook reviews and analyzes the results of the 5-day training period of this study, then draws conclusions and lays out what steps should be taken in future research using the training framework.
+- [notebook3_results_analysis](./notebook3_results_analysis.ipynb) - reviews and analyzes the results of the 5-day training period of this study, then draws conclusions and lays out what steps should be taken in future research using the training framework.
 
-The '[ARS_Carla/](ARS_Carla/)' folder in this repository contains a modified version of the code provided by the authors of the 2018 paper on ARS (Mania, Guy, and Recht) to reproduce their results using the environments in Python's gym module, which employs parallelization through use of the [Ray package](https://docs.ray.io/en/latest/) for Python. Their code has been modified to make use of [Sentdex's CarEnv class](https://pythonprogramming.net/reinforcement-learning-self-driving-autonomous-cars-carla-python/) that he used to train a Deep Q-Learning Network (DQN), which itself has been modified to function in the context of ARS learning. Useful functionality has been added to the ARS code which allows the user to send in a previously trained policy so that training may be resumed at a later time or recovered in the event of an error.
+- [ARS_Carla/](./ARS_Carla) - contains a modified version of the code provided by the authors of the 2018 paper on ARS (Mania, Guy, and Recht) to reproduce their results using the environments in Python's gym module, which employs parallelization through use of the [Ray package](https://docs.ray.io/en/latest/) for Python. Their code has been modified to make use of [Sentdex's CarEnv class](https://pythonprogramming.net/reinforcement-learning-self-driving-autonomous-cars-carla-python/) that he used to train a Deep Q-Learning Network (DQN), which itself has been modified to function in the context of ARS learning. Useful functionality has been added to the ARS code which allows the user to send in a previously trained policy so that training may be resumed at a later time or recovered in the event of an error.
 
-The '[ars_practice](ars_practice.ipynb)' notebook contains preliminary research into the ARS algorithm that was done by recreating Skow's ARS example using the BipedalWalker-v3 environment from Python's Gym module. This experiment was helpful to get a baseline concept of how many training episodes the algorithm needed to effectively train an agent. Videos of the resulting policy can be found in the '[videos](videos/)' folder.
+- [ars_practice](./ars_practice.ipynb) - contains preliminary research into the ARS algorithm that was done by recreating Skow's ARS example using the BipedalWalker-v3 environment from Python's Gym module. This experiment was helpful to get a baseline concept of how many training episodes the algorithm needed to effectively train an agent. Videos of the resulting policy can be found in the '[videos](videos/)' folder.
 
 
 ## Training an Agent from Scratch
@@ -47,6 +47,12 @@ To install Carla, simply download the release suitable for your operating system
 If you have CuDNN installed alongside TensorFlow, it will cause errors with this code. The only way to avoid this issue (that I have found so far) is to temporarily move or change the name of the folder containing your CuDNN installation so that python can not find it when loading TensorFlow. An experimental feature is in development to use this code with CuDNN by passing '--enable_gpu True' on execution, but it is buggy and I do not recommend using it. I strongly recommend that users who have CuDNN installed simply change the name of the containing folder temporarily while using this code, that is the easiest and most stable solution.
 
 Once you have the dependencies installed, from a *non-administrator* terminal (Windows Powershell works), start a Ray cluster by typing the following command (note that you may need to adjust parameters for this command to suit the hardware of your machine, which you can inspect by calling 'ray start --help'. Running the command with no additional parameters will automatically set the number of CPUs, GPUs, and memory reserves based on your machine):
+
+To install Ray execute:
+``` 
+pip install ray
+```
+For more information on Ray see http://ray.readthedocs.io/en/latest/. 
 
 ```
 ray start --head
