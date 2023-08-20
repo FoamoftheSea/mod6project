@@ -28,13 +28,7 @@ import random
 import math
 import sys
 import glob
-import tensorflow as tf
-
-import parser
 import time
-import datetime
-import numpy as np
-#import gym
 import logz
 import ray
 import utils
@@ -58,13 +52,13 @@ from tensorflow.compat.v1 import InteractiveSession
 #session = InteractiveSession(config=config)
 
 # Importing carla from directory on my local machine
-try:
-    sys.path.append(glob.glob(r'C:\ProgramData\Carla\PythonAPI\carla\dist\carla-*%d.%d-%s.egg' % (
-        sys.version_info.major,
-        sys.version_info.minor,
-        'win-amd64' if os.name == 'nt' else 'linux-x86_64'))[0])
-except IndexError:
-    pass
+# try:
+#     sys.path.append(glob.glob(r'C:\ProgramData\Carla\PythonAPI\carla\dist\carla-*%d.%d-%s.egg' % (
+#         sys.version_info.major,
+#         sys.version_info.minor,
+#         'win-amd64' if os.name == 'nt' else 'linux-x86_64'))[0])
+# except IndexError:
+#     pass
 import carla
 
 # Carla Car Env based on work of Sentdex
@@ -269,14 +263,12 @@ class Worker(object):
         self.delta_std = delta_std
         self.rollout_length = rollout_length
 
-        
     def get_weights_plus_stats(self):
         """ 
         Get current policy weights and current statistics of past states.
         """
         assert self.policy_params['type'] == 'linear'
         return self.policy.get_weights_plus_stats()
-    
 
     #@ray.remote(num_gpus= .5 / 2)
     def rollout(self, shift = 0., rollout_length=None, state_filter=False):
@@ -394,7 +386,6 @@ class ARSLearner(object):
                  params=None,
                  seed=123,
                  seconds_per_episode=15,
-                 eval_rollouts=None,
                  log_every=10,
                  show_cam=1,
                  enable_gpu=False):
@@ -428,7 +419,6 @@ class ARSLearner(object):
         self.max_past_avg_reward = float('-inf')
         self.num_episodes_used = float('inf')
         self.log_every = log_every
-        self.eval_rollouts = eval_rollouts or self.num_deltas
 
         
         # create shared table for storing noise
@@ -594,7 +584,7 @@ class ARSLearner(object):
 
             # record weights and stats every n iterations
             if ((i + 1) % self.log_every == 0):
-                rewards = self.aggregate_rollouts(num_rollouts=self.eval_rollouts, 
+                rewards = self.aggregate_rollouts(num_rollouts=self.num_deltas,
                                                   evaluate=True)
                 #w = ray.get(self.workers[0].get_weights.remote())
                 if state_filter:
@@ -731,7 +721,6 @@ def run_ars(params):
                      seconds_per_episode=params['seconds_per_episode'],
                      show_cam=params['show_cam'],
                      log_every=params['log_every'],
-                     eval_rollouts=params['eval_rollouts'],
                      enable_gpu=params['enable_gpu']
                      )
         
@@ -753,22 +742,21 @@ if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('--env_name', type=str, default='CarEnv')
-    parser.add_argument('--n_iter', '-n', type=int, default=1000)
-    parser.add_argument('--num_deltas', '-nd', type=int, default=32)
-    parser.add_argument('--deltas_used', '-du', type=int, default=16)
-    parser.add_argument('--learning_rate', '-lr', type=float, default=0.02)
-    parser.add_argument('--lr_decay', '-lrd', type=float, default=0.0)
-    parser.add_argument('--delta_std', '-std', type=float, default=.03)
-    parser.add_argument('--std_decay', '-stdd', type=float, default=0.0)
-    parser.add_argument('--n_workers', '-e', type=int, default=4)
-    parser.add_argument('--rollout_length', '-r', type=int, default=1000)
-    parser.add_argument('--show_cam', '-sc', type=int, default=1)
-    parser.add_argument('--policy_file', '-pf', type=str, default='')
-    parser.add_argument('--seconds_per_episode', '-se', type=int, default=15)
-    parser.add_argument('--state_filter', '-sf', type=bool, default=False)
-    parser.add_argument('--log_every', '-le', type=int, default=10)
-    parser.add_argument('--eval_rollouts', '-er', type=int, default=None)
-    parser.add_argument('--enable_gpu', '-gpu', type=bool, default=False)
+    parser.add_argument('--n_iter', '-n', type=int, default=1000, help="Total number of update steps.")
+    parser.add_argument('--num_deltas', '-nd', type=int, default=32, help="Number of deltas to explore between each update step.")
+    parser.add_argument('--deltas_used', '-du', type=int, default=16, help="Number of top performing deltas to use in udate step.")
+    parser.add_argument('--learning_rate', '-lr', type=float, default=0.02, help="Learning rate to start training at.")
+    parser.add_argument('--lr_decay', '-lrd', type=float, default=0.0, help="Learning rate decay")
+    parser.add_argument('--delta_std', '-std', type=float, default=.03, help="The amount of noise to add to weights during exploration.")
+    parser.add_argument('--std_decay', '-stdd', type=float, default=0.0, help="Decay in the amount of noise to add to policy weights.")
+    parser.add_argument('--n_workers', '-e', type=int, default=4, help="Number of driver agents to run in parallel. Set based on hardware capability.")
+    parser.add_argument('--rollout_length', '-r', type=int, default=1000, help="Not used")
+    parser.add_argument('--show_cam', '-sc', type=int, default=1, help="Number of cameras to display to user during training. Set to zero for best performance.")
+    parser.add_argument('--policy_file', '-pf', type=str, default='', help="File containing weights for resuming training.")
+    parser.add_argument('--seconds_per_episode', '-se', type=int, default=15, help="Maximum number of seconds for each driving episode.")
+    parser.add_argument('--state_filter', '-sf', type=bool, default=False, help="Turns on rolling statistics normalization of inputs. Best to leave False.")
+    parser.add_argument('--log_every', '-le', type=int, default=10, help="Number of update steps to complete between each logging event.")
+    parser.add_argument('--enable_gpu', '-gpu', type=bool, default=False, help="Whether to enable tensorflow gpu access. Leave to False.")
 
     # for Swimmer-v1 and HalfCheetah-v1 use shift = 0
     # for Hopper-v1, Walker2d-v1, and Ant-v1 use shift = 1
@@ -782,14 +770,14 @@ if __name__ == '__main__':
     parser.add_argument('--filter', type=str, default='MeanStdFilter')
 
     local_ip = socket.gethostbyname(socket.gethostname())
-    ray.init(#object_store_memory=1.5e+10,
+    ray.init(# object_store_memory=1.5e+10,
              #_memory=1.5e+10,
-              #num_cpus=7,
-              address= local_ip + ':6379',
-              #redis_password=''
-              #address = '127.0.0.1:6379',
-              #local_mode
-              #node_ip_address=local_ip
+             # num_cpus=7,
+             # address= local_ip + ':6379',
+             # redis_password=''
+             # address = '127.0.0.1:6379',
+             # local_mode
+             # node_ip_address=local_ip
         )
     
     args = parser.parse_args()
