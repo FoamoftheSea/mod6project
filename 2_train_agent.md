@@ -18,11 +18,8 @@ All of the code being run to perform this parallel training using ray can be fou
       - Append parameters to this command that are appropriate for your machine if needed. The CarEnvs take up a lot of RAM, so it may be necessary to set your --object-store-memory and --memory parameters to as high of values as you can.
       - You can call up the list of parameters with 'ray start --help'.
 3. Navigate to the ARS_Carla folder in this repository: `cd ARS_Carla`
-4. Set this environment variable as recommended by the ARS authors
-    - Linux: `export MKL_NUM_THREADS=1`
-    - Windows: `$env:MKL_NUM_THREADS=1`
-5. Explore list of parameter options for training with `python code/ars_carla.py --help`
-6. In another **non-administrator** terminal:
+4. Explore list of parameter options for training with `python code/ars_carla.py --help`
+5. In another **non-administrator** terminal:
    - run `conda activate ars_carla`
    - Train a policy using the following command (example arguments shown)
 ```
@@ -33,7 +30,7 @@ This will connect to the running Ray cluster, and begin creating workers in the 
 ### Training a Pre-Existing Policy
 Follow the same steps above, except include the --policy_file parameter in your call to `code/ars_carla.py` pointing to the .csv or .npz file containing the weights you are going to build on.
    - The default name of a saved policy file is 'lin_policy_plus.npz'.
-   - **Note** that this does not automatically recover the current learning rate or delta std from when the training ended, so you will need either recover that from the log file, or start it wherever you want.)
+   - **Note** that this does not automatically recover the current learning rate or delta std from when the training ended, so you will need either recover that from the log file, or start it wherever you want.
 
 ```
 python code/ars_carla.py --policy_file ./data/old_logs/2020-12-17_1000steps/lin_policy_plus.npz

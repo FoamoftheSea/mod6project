@@ -40,7 +40,7 @@ The safety and scalability of learning in a simulated environment such as Carla 
 ## Setup
 
 To run the notebooks or scripts in this repo, take the following steps:
-1. Install CARLA 0.9.14
+1. Install CARLA 0.9.13
    - Follow instructions in [CARLA quickstart guide](https://carla.readthedocs.io/en/latest/start_quickstart/).
 2. Create conda env
    - `conda env create -f environment.yaml`

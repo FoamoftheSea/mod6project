@@ -8,6 +8,6 @@ dependencies:
     - tensorflow==2.4.1
     - ray==1.11
     - protobuf==3.20.0
-    - carla==0.9.14
+    - carla==0.9.13
     - notebook==6.5.5
     - matplotlib==3.3.4
